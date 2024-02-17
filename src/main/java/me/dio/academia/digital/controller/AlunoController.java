@@ -3,12 +3,16 @@ package me.dio.academia.digital.controller;
 import me.dio.academia.digital.entity.Aluno;
 import me.dio.academia.digital.entity.AvaliacaoFisica;
 import me.dio.academia.digital.entity.form.AlunoForm;
+import me.dio.academia.digital.entity.form.AlunoUpdateForm;
 import me.dio.academia.digital.service.impl.AlunoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/alunos")
@@ -32,6 +36,15 @@ public class AlunoController {
                                   String dataDeNacimento){
     return service.getAll(dataDeNacimento);
   }
+  @PutMapping("/{id}")
+  public ResponseEntity<Aluno> atualizar(@PathVariable Long id, @RequestBody AlunoUpdateForm aluno) {
+    Aluno alunoAtualizado = service.update(id, aluno);
+    return ResponseEntity.ok(alunoAtualizado);
+  }
 
-
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    service.delete(id);
+    return ResponseEntity.noContent().build();
+  }
 }
